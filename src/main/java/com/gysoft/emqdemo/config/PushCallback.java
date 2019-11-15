@@ -1,13 +1,8 @@
 package com.gysoft.emqdemo.config;
 
-import com.gysoft.emqdemo.client.MqttPushClient;
-import com.gysoft.emqdemo.util.NetUtils;
-import com.gysoft.emqdemo.util.PropertiesUtil;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-
-import java.util.concurrent.TimeUnit;
 
 
 /**

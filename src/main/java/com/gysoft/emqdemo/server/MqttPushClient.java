@@ -1,4 +1,4 @@
-package com.gysoft.emqdemo.client;
+package com.gysoft.emqdemo.server;
 
 import com.gysoft.emqdemo.bean.PushPayload;
 import com.gysoft.emqdemo.config.PushCallback;

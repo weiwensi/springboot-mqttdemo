@@ -1,7 +1,7 @@
 package com.gysoft.emqdemo.controller;
 
 import com.gysoft.emqdemo.bean.PushPayload;
-import com.gysoft.emqdemo.client.MqttPushClient;
+import com.gysoft.emqdemo.server.MqttPushClient;
 import com.gysoft.emqdemo.util.QosType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
