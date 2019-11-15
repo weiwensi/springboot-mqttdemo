@@ -7,3 +7,5 @@ com:
     topic: demo/topics
     timeout: 10
     keepalive: 20
+server:
+  port: 9090

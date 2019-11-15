@@ -6,12 +6,15 @@ import com.gysoft.emqdemo.util.PropertiesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.springframework.stereotype.Component;
 
 /**
+ *
  * @author 魏文思
  * @date 2019/11/14$ 15:55$
  */
 @Slf4j
+@Component
 public class MqttPushClient {
 
     private MqttClient client;
@@ -123,6 +126,5 @@ public class MqttPushClient {
                 .bulid();
         MqttPushClient.getInstance().publish(0, false, kdTopic, pushMessage);
 
-        MqttPushClient.getInstance().subscribe("dd",0);
     }
 }

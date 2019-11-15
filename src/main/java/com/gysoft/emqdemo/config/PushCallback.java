@@ -13,7 +13,7 @@ public class PushCallback   implements MqttCallback {
 
     @Override
     public void connectionLost(Throwable throwable) {
-        //连接丢失后一般在这里进行重连
+        //在断开连接时使用，主要用于重连
         do {
 
         } while(true/*!this.gyMqttClient.isConnected() && this.gyMqttClient.getReConnTimes() < this.gyMqttClient.getMaxReconnTimes()*/);
