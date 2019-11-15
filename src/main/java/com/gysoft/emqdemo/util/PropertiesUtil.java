@@ -16,7 +16,12 @@ public class PropertiesUtil {
     public static String MQTT_PASSWORD;
     public static int MQTT_TIMEOUT;
     public static int MQTT_KEEP_ALIVE;
-
+    public  static String prefixUrl;
+    /**
+     * 最大重连次数
+     */
+    public  static int MQTT_MAXRECONNECTTIMES;
+     public static  int MQTT_RECONNINTERVAL;
 
 
 
@@ -27,7 +32,9 @@ public class PropertiesUtil {
         MQTT_PASSWORD = loadMqttProperties().getProperty("password");*/
         MQTT_TIMEOUT = Integer.valueOf(loadMqttProperties().getProperty("timeout"));
         MQTT_KEEP_ALIVE = Integer.valueOf(loadMqttProperties().getProperty("keepalive"));
-
+        MQTT_MAXRECONNECTTIMES=Integer.valueOf(loadMqttProperties().getProperty("maxReconnectTimes"));
+        MQTT_RECONNINTERVAL=Integer.valueOf(loadMqttProperties().getProperty("reconnInterval"));
+        prefixUrl = String.valueOf(loadMqttProperties().getProperty("prefixUrl"));
     }
 
 

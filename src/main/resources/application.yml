@@ -2,10 +2,15 @@
 #mq≈‰÷√
 com:
   mqtt:
+
     host: tcp://localhost:1883
     clientid: JavaSample
     topic: demo/topics
     timeout: 10
     keepalive: 20
+    maxReconnectTimes: 10
+    reconnInterval: 2
+    prefixUrl: http://192.168.3.93:18083
+
 server:
   port: 9090

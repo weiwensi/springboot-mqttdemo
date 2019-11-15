@@ -20,6 +20,28 @@ public class MqttPushClient {
     private MqttClient client;
 
     private static volatile MqttPushClient mqttPushClient = null;
+    //重连次数
+    private int reConnTimes;
+
+    public int getReConnTimes() {
+        return this.reConnTimes;
+    }
+
+    public void setReConnTimes(int reConnTimes) {
+        if (this.isConnected()) {
+            reConnTimes = 0;
+        }
+
+        this.reConnTimes = reConnTimes;
+    }
+
+    public int getMaxReconnTimes() {
+        return PropertiesUtil.MQTT_MAXRECONNECTTIMES;
+    }
+
+    public int getReconnInterval() {
+        return PropertiesUtil.MQTT_RECONNINTERVAL;
+    }
 
     public static MqttPushClient getInstance(){
 
@@ -59,6 +81,7 @@ public class MqttPushClient {
         }
     }
 
+
     /**
      * 发布，默认qos为0，非持久化
      * @param topic
@@ -88,9 +111,7 @@ public class MqttPushClient {
         try {
             token = mTopic.publish(message);
             token.waitForCompletion();
-        } catch (MqttPersistenceException e) {
-            e.printStackTrace();
-        } catch (MqttException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

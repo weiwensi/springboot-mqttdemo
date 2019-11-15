@@ -32,19 +32,24 @@ public class EMQController {
          * publish某主题的消息，payload为空且retain值是true，则会删除这条持久化的消息。
          *
          * publish某主题的消息，payload为空且retain值是false，则不会删除这条持久化的消息。
+
+         QOS_AT_MOST_ONCE(0, "最多一次，有可能重复或丢失"),
+         QOS_AT_LEAST_ONCE(1, "至少一次，有可能重复"),
+         QOS_EXACTLY_ONCE(2, "只有一次，确保消息只到达一次");
+
          */
-        //这里将消息异步处理  使用futuretask，或者使用rabbimq进行异步处理
+        //这里将消息异步处理  使用futuretask，或者使用rabbimq进行异步处理或者spring的异步机制进行处理
         FutureTask futureTask = new FutureTask(() -> {
-            MqttPushClient.getInstance().publish(QosType.QOS_AT_MOST_ONCE.getNumber(), false, kdTopic, pushMessage);
+            MqttPushClient.getInstance().publish(QosType.QOS_AT_LEAST_ONCE.getNumber(), true, kdTopic, pushMessage);
             return true;
         });
         ExecutorService service = Executors.newCachedThreadPool();
         service.submit(futureTask);
         try {
             Boolean result = (Boolean) futureTask.get();
-            if(result ==true){
+            if (result == true) {
                 System.out.println("消息发送成功");
-            }else {
+            } else {
                 System.out.println("消息推送异常");
             }
         } catch (Exception e) {
