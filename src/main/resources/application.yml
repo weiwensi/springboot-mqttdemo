@@ -1,0 +1,9 @@
+
+#mq≈‰÷√
+com:
+  mqtt:
+    host: tcp://localhost:1883
+    clientid: JavaSample
+    topic: demo/topics
+    timeout: 10
+    keepalive: 20
