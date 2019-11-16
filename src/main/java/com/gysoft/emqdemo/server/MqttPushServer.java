@@ -1,7 +1,6 @@
 package com.gysoft.emqdemo.server;
 
 import com.gysoft.emqdemo.bean.PushPayload;
-import com.gysoft.emqdemo.config.PushCallback;
 import com.gysoft.emqdemo.util.PropertiesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.*;
@@ -15,11 +14,11 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class MqttPushClient {
+public class MqttPushServer {
 
     private MqttClient client;
 
-    private static volatile MqttPushClient mqttPushClient = null;
+    private static volatile MqttPushServer mqttPushClient = null;
     //重连次数
     private int reConnTimes;
 
@@ -43,12 +42,12 @@ public class MqttPushClient {
         return PropertiesUtil.MQTT_RECONNINTERVAL;
     }
 
-    public static MqttPushClient getInstance(){
+    public static MqttPushServer getInstance(){
 
         if(null == mqttPushClient){
-            synchronized (MqttPushClient.class){
+            synchronized (MqttPushServer.class){
                 if(null == mqttPushClient){
-                    mqttPushClient = new MqttPushClient();
+                    mqttPushClient = new MqttPushServer();
                 }
             }
 
@@ -57,7 +56,7 @@ public class MqttPushClient {
 
     }
 
-    private MqttPushClient() {
+    private MqttPushServer() {
         connect();
     }
 
@@ -65,6 +64,20 @@ public class MqttPushClient {
         try {
             client = new MqttClient(PropertiesUtil.MQTT_HOST, PropertiesUtil.MQTT_CLIENTID, new MemoryPersistence());
             MqttConnectOptions options = new MqttConnectOptions();
+            /**
+             * clean session 值为false,既保留会话，那么该客户端上线的时候，并订阅了主题“r”,那么该主题会一直存在，即使客户端离线，该主题也仍然会记忆在EMQ服务器内存。
+             * 当客户端离线又上线时，仍然会接受到离线期间别人发来的publish消息（QOS=0,1,2）.类似及时通讯软件，终端可以接受离线消息。
+             * 除非客户端主动取消订阅主题， 否则主题一直存在。另外，mnesia不会持久化session，subscription和topic，服务器重启则丢失。
+
+             * 当clean session 为true
+             * 该客户端上线，并订阅了主题“r”，那么该主题会随着客户端离线而删除。
+             * 当客户端离线又上线时，接受不到离线期间别人发来的publish消息
+             *
+             * 不管clean session的值是什么，当终端设备离线时，QoS=0,1,2的消息一律接收不到。
+             * 当clean session的值为true，当终端设备离线再上线时，离线期间发来QoS=0,1,2的消息一律接收不到。
+             * 当clean session的值为false，当终端设备离线再上线时，离线期间发来QoS=0,1,2的消息仍然可以接收到。如果同个主题发了多条就接收多条，一条不差，照单全收
+             *
+             */
             options.setCleanSession(false);
             /*options.setUserName(PropertiesUtil.MQTT_USER_NAME);
             options.setPassword(PropertiesUtil.MQTT_PASSWORD.toCharArray());*/
@@ -145,7 +158,7 @@ public class MqttPushClient {
         PushPayload pushMessage = PushPayload.getPushPayloadBuider().setMobile("17637900215")
                 .setContent("designModel")
                 .bulid();
-        MqttPushClient.getInstance().publish(0, false, kdTopic, pushMessage);
+        MqttPushServer.getInstance().publish(0, false, kdTopic, pushMessage);
 
     }
 }

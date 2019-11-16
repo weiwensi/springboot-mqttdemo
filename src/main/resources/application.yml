@@ -8,8 +8,8 @@ com:
     topic: demo/topics
     timeout: 10
     keepalive: 20
-    maxReconnectTimes: 10
-    reconnInterval: 2
+    maxReconnectTimes: 5
+    reconnInterval: 1
     prefixUrl: http://192.168.3.93:18083
 
 server:

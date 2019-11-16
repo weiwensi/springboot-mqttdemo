@@ -1,7 +1,7 @@
 package com.gysoft.emqdemo.controller;
 
 import com.gysoft.emqdemo.bean.PushPayload;
-import com.gysoft.emqdemo.server.MqttPushClient;
+import com.gysoft.emqdemo.server.MqttPushServer;
 import com.gysoft.emqdemo.util.QosType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +40,7 @@ public class EMQController {
          */
         //这里将消息异步处理  使用futuretask，或者使用rabbimq进行异步处理或者spring的异步机制进行处理
         FutureTask futureTask = new FutureTask(() -> {
-            MqttPushClient.getInstance().publish(QosType.QOS_AT_LEAST_ONCE.getNumber(), true, kdTopic, pushMessage);
+            MqttPushServer.getInstance().publish(QosType.QOS_AT_LEAST_ONCE.getNumber(), true, kdTopic, pushMessage);
             return true;
         });
         ExecutorService service = Executors.newCachedThreadPool();

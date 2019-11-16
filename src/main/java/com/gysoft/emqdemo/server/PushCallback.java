@@ -1,8 +1,12 @@
-package com.gysoft.emqdemo.config;
+package com.gysoft.emqdemo.server;
 
+import com.gysoft.emqdemo.util.NetUtils;
+import com.gysoft.emqdemo.util.PropertiesUtil;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -13,22 +17,25 @@ public class PushCallback implements MqttCallback {
 
     @Override
     public void connectionLost(Throwable throwable) {
-       /* MqttPushClient mqttClient = MqttPushClient.getInstance();
+       /* MqttPushServer mqttPushServer = MqttPushServer.getInstance();
         //在断开连接时使用，主要用于重连
+        System.out.println("开始判断是否进入重连");
         do {
+            System.out.println("进入重连");
             if (NetUtils.connectTest(PropertiesUtil.prefixUrl)) {
-                mqttClient.connect();
-                mqttClient.setReConnTimes(mqttClient.getReConnTimes() + 1);
+                mqttPushServer.connect();
+                mqttPushServer.setReConnTimes(mqttPushServer.getReConnTimes() + 1);
             }
 
             try {
-                TimeUnit.SECONDS.sleep((long) mqttClient.getReconnInterval());
+                TimeUnit.SECONDS.sleep((long) mqttPushServer.getReconnInterval());
+
             } catch (InterruptedException var3) {
+                System.out.println("重连出现异常");
                 var3.printStackTrace();
             }
-        } while (!mqttClient.isConnected() && mqttClient.getReConnTimes() < MqttPushClient.getInstance().getMaxReconnTimes());
-*/
-
+        } while (!mqttPushServer.isConnected() && mqttPushServer.getReConnTimes() < mqttPushServer.getMaxReconnTimes());
+        System.out.println("重试成功！！！");*/
     }
 
 
